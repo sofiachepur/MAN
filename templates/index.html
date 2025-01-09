@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методи голосування</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+</head>
+<body>
+    <h1>Введення даних для голосування</h1>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/">
+        <label for="votes">Введіть дані:</label><br>
+        <label>
+            <textarea name="votes" rows="10" cols="50" placeholder="Кількість голосів: 0 0 0 0&#10;Впорядкування кандидатів:&#10;A A A A&#10;A A A A&#10;A A A A&#10;A A A A"></textarea>
+        </label><br><br>
+        <label for="method">Оберіть метод голосування:</label><br>
+        <label>
+            <select name="method">
+                <option value="absolute_majority">Абсолютна більшість</option>
+                <option value="relative_majority">Відносна більшість</option>
+                <option value="borda">Метод Борда</option>
+                <option value="condorcet">Метод Кондорсе</option>
+                <option value="copeland">Метод Копленда</option>
+                <option value="simpson">Метод Сімпсона</option>
+            </select>
+        </label><br><br>
+        <button type="submit">Розрахувати</button>
+    </form>
+</body>
+</html>

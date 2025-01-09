@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Результати голосування</title>
+</head>
+<body>
+    <h1>Результати голосування</h1>
+    <ul>
+        {% for method, result in results.items() %}
+        <li><strong>{{ method }}:</strong> {{ result }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Назад</a>
+</body>
+</html>

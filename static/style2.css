@@ -1,0 +1,62 @@
+/* Загальні стилі для сторінки */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #162063;
+    margin-bottom: 20px;
+}
+
+/* Стиль для форми */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Стиль для полів введення */
+textarea, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Колір для кнопки */
+button {
+    background-color: #4c8cbf;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #037fec;
+}
+
+/* Стиль для помилки */
+p {
+    font-size: 16px;
+}
+
+p.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Стиль для повідомлення про помилки */
+p[style="color: red;"] {
+    color: red;
+}

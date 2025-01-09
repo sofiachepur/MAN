@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Голосування</title>
+</head>
+<body>
+    <h1>Система голосування</h1>
+    <form action="/results" method="post">
+        <label>Кандидати (через пробіл):</label><br>
+        <input type="text" name="candidates" required><br><br>
+        <label>Профіль голосування (один голос на рядок):</label><br>
+        <textarea name="votes" rows="10" cols="30" required></textarea><br><br>
+        <button type="submit">Відправити</button>
+    </form>
+</body>
+</html>
