@@ -5,80 +5,55 @@ app = Flask(__name__)
 
 def parse_input(data):
     lines = data.strip().split("\n")
-    # Перевірка правильності введення
+
     if not lines[0].startswith("Кількість голосів:"):
         raise ValueError("Перша строка повинна починатися з 'Кількість голосів:'")
-    # Отримуємо кількість голосів
     vote_counts = list(map(int, lines[0].replace("Кількість голосів:", "").strip().split()))
     if not lines[1].startswith("Впорядкування кандидатів:"):
         raise ValueError("Друга строка повинна починатися з 'Впорядкування кандидатів:'")
-    # Отримуємо впорядкування кандидатів
     rankings = [line.strip().split() for line in lines[2:]]
     if len(vote_counts) != len(rankings):
         raise ValueError("Кількість голосів не відповідає кількості впорядкувань.")
     return vote_counts, rankings
 
-
-# Абсолютна більшість (з першого рядка впорядкування)
 def absolute_majority(vote_counts, rankings):
-    # Тільки перший рядок з впорядкуванням кандидатів
     first_line_ranking = rankings[0]
-    # Підрахунок голосів для кожного кандидата на першому місці
-    total_votes = sum(vote_counts)  # Загальна кількість голосів
+    total_votes = sum(vote_counts) 
     aggregated_results = {}
-
-    # Підрахунок загальних голосів для кожного кандидата з урахуванням повторень
+  
     for i, candidate in enumerate(first_line_ranking):
         if candidate not in aggregated_results:
             aggregated_results[candidate] = 0
         aggregated_results[candidate] += vote_counts[i]
 
-    # Перевіряємо, чи є кандидат з більш ніж половиною голосів
     for candidate, count in aggregated_results.items():
         if count > total_votes / 2:
             return candidate
-
-    # Якщо такого кандидата немає
     return "немає"
 
-
-# Відносна більшість (з першого рядка впорядкування)
 def relative_majority(vote_counts, rankings):
-    # Тільки перший рядок з впорядкуванням кандидатів
     first_line_ranking = rankings[0]
-    # Підрахунок голосів для кожного кандидата на першому місці
     aggregated_results = {}
 
-    # Підрахунок загальних голосів для кожного кандидата з урахуванням повторень
     for i, candidate in enumerate(first_line_ranking):
         if candidate not in aggregated_results:
             aggregated_results[candidate] = 0
         aggregated_results[candidate] += vote_counts[i]
 
-    # Знаходимо максимальну кількість голосів
     max_votes = max(aggregated_results.values())
 
-    # Переможці з найбільшою кількістю голосів
     winners = [candidate for candidate, votes in aggregated_results.items() if votes == max_votes]
-
-    # Повертаємо список переможців або одного, якщо їх лише один
     return winners if len(winners) > 1 else winners[0]
 
 
 def borda_method(vote_counts, rankings):
-    # Перетворення ранжувань зі стовпців у рядки
-    rankings_by_columns = list(zip(*rankings))  # Транспонування
-
-    # Унікальні кандидати
+    rankings_by_columns = list(zip(*rankings))  
     candidates = {candidate for ranking in rankings_by_columns for candidate in ranking}
     borda_scores = {candidate: 0 for candidate in candidates}
-
-    # Підрахунок очок
     for i, ranking in enumerate(rankings_by_columns):
         for j, candidate in enumerate(ranking):
             borda_scores[candidate] += vote_counts[i] * (len(ranking) - j - 1)
 
-    # Повернення кандидата з максимальним балом
     return max(borda_scores, key=borda_scores.get)
 
 
@@ -86,17 +61,15 @@ def pairwise_comparison(candidate, other_candidate, rankings, vote_counts):
     candidate_wins = 0
     other_candidate_wins = 0
     for i, ranking in enumerate(rankings):
-        # Якщо обидва кандидати є в списку
         if candidate in ranking and other_candidate in ranking:
             if ranking.index(candidate) < ranking.index(other_candidate):
                 candidate_wins += vote_counts[i]
             else:
                 other_candidate_wins += vote_counts[i]
-        # Якщо один кандидат відсутній у списку
         elif candidate in ranking:
-            candidate_wins += vote_counts[i]  # Вважаємо перемогу кандидата
+            candidate_wins += vote_counts[i]
         elif other_candidate in ranking:
-            other_candidate_wins += vote_counts[i]  # Вважаємо перемогу іншого кандидата
+            other_candidate_wins += vote_counts[i]  
     return candidate_wins, other_candidate_wins
 
 
